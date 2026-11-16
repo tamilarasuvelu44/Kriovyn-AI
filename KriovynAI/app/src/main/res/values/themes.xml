@@ -1,0 +1,5 @@
+<resources>
+    <style name="Theme.KriovynAI" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#070A12</item>
+    </style>
+</resources>

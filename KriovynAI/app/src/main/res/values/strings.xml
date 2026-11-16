@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Kriovyn AI</string>
+    <string name="reminder_channel_name">Task Reminders</string>
+    <string name="reminder_channel_description">Local notifications scheduled for Kriovyn AI tasks.</string>
+</resources>
