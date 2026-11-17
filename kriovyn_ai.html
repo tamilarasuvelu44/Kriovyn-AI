@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kriovyn AI — Think Beyond. Act Smarter.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            navy: '#0B1224',
+            electric: '#80D8FF',
+            violet: '#9178FF',
+            surface: '#151E32',
+            surfaceLight: '#1E2942',
+            mainText: '#F5F7FF',
+            secText: '#A9B5CC',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar and subtle futuristic animations */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #060A14;
+      color: #F5F7FF;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.92); opacity: 0.8; }
+      50% { transform: scale(1.12); opacity: 0.35; }
+      100% { transform: scale(0.92); opacity: 0.8; }
+    }
+    .animate-pulse-ring {
+      animation: pulseRing 2.2s infinite ease-in-out;
+    }
+
+    @keyframes circuitFlow {
+      0% { stroke-dashoffset: 40; }
+      100% { stroke-dashoffset: 0; }
+    }
+    .circuit-line {
+      stroke-dasharray: 20;
+      animation: circuitFlow 2.5s linear infinite;
+    }
+
+    /* Light mode overrides when toggled */
+    html:not(.dark) body { background-color: #E2E8F0; color: #0F172A; }
+    html:not(.dark) .app-shell { background-color: #F8FAFC; color: #0F172A; border-color: #CBD5E1; }
+    html:not(.dark) .bg-surface { background-color: #FFFFFF !important; border-color: #E2E8F0 !important; }
+    html:not(.dark) .bg-surfaceLight { background-color: #F1F5F9 !important; }
+    html:not(.dark) .bg-navy { background-color: #F8FAFC !important; }
+    html:not(.dark) .text-mainText { color: #0F172A !important; }
+    html:not(.dark) .text-secText { color: #475569 !important; }
+    html:not(.dark) .border-slate-800 { border-color: #E2E8F0 !important; }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center sm:p-4">
+
+  <!-- Mobile App Shell Container -->
+  <div id="appShell" class="app-shell relative w-full sm:w-[420px] h-[100dvh] sm:h-[850px] bg-navy text-mainText sm:rounded-[36px] sm:border sm:border-slate-800 shadow-2xl flex flex-col overflow-hidden">
+
+    <!-- Toast Notification Banner -->
+    <div id="toast" class="hidden absolute top-14 left-4 right-4 z-50 bg-surfaceLight border border-electric/40 text-mainText px-4 py-3 rounded-2xl shadow-xl flex items-center justify-between text-xs transition-all">
+      <span id="toastMsg" class="font-medium">Action completed</span>
+      <button onclick="hideToast()" class="text-electric ml-2 font-bold">✕</button>
+    </div>
+
+    <!-- SCREEN 1 & 2: SPLASH & ONBOARDING OVERLAY -->
+    <div id="onboardingOverlay" class="hidden absolute inset-0 z-40 bg-navy flex flex-col justify-between p-6 overflow-y-auto">
+      <div class="pt-6 flex flex-col items-center text-center">
+        <!-- Custom SVG Intelligent Brain + Circuit Logo -->
+        <div class="relative w-24 h-24 mb-5 flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full bg-electric/15 animate-pulse-ring"></div>
+          <svg class="w-20 h-20 relative z-10" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="brainGrad" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#80D8FF"/>
+                <stop offset="100%" stop-color="#9178FF"/>
+              </linearGradient>
+            </defs>
+            <path d="M47 22C34 22 24 31 24 43C24 47 25.5 51 28 54C25 57 23 61 23 66C23 75 30 82 39 82H47V22Z" stroke="url(#brainGrad)" stroke-width="3.5" stroke-linejoin="round"/>
+            <path d="M53 22C66 22 76 31 76 43C76 47 74.5 51 72 54C75 57 77 61 77 66C77 75 70 82 61 82H53V22Z" stroke="url(#brainGrad)" stroke-width="3.5" stroke-linejoin="round"/>
+            <path class="circuit-line" d="M35 40H47M32 62H47M65 40H53M68 62H53M47 32L38 28M53 72L62 76" stroke="#80D8FF" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="35" cy="40" r="3" fill="#80D8FF"/>
+            <circle cx="32" cy="62" r="3" fill="#9178FF"/>
+            <circle cx="65" cy="40" r="3" fill="#80D8FF"/>
+            <circle cx="68" cy="62" r="3" fill="#9178FF"/>
+            <circle cx="50" cy="52" r="4.5" fill="#F5F7FF"/>
+          </svg>
+        </div>
+
+        <span class="px-3 py-1 rounded-full bg-electric/10 border border-electric/30 text-electric text-[11px] font-semibold tracking-wider uppercase mb-2">
+          Personal AI Agent Platform
+        </span>
+        <h1 class="text-3xl font-bold tracking-tight text-mainText">KRIOVYN AI</h1>
+        <p class="text-sm font-medium text-electric mt-1">Think Beyond. Act Smarter.</p>
+      </div>
+
+      <!-- Capabilities & Privacy Disclosures -->
+      <div class="space-y-3 my-4 text-left">
+        <div class="bg-surface p-3.5 rounded-2xl border border-slate-800/80">
+          <div class="flex items-center gap-2.5 mb-1">
+            <span class="text-electric text-base">⚡</span>
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-mainText">Autonomous Agent Engine</h3>
+          </div>
+          <p class="text-xs text-secText leading-relaxed">
+            Plans multi-step tasks, manages local notes & reminders, and executes registered Android tools safely.
+          </p>
+        </div>
+
+        <div class="bg-surface p-3.5 rounded-2xl border border-slate-800/80">
+          <div class="flex items-center gap-2.5 mb-1">
+            <span class="text-violet text-base">🛡️</span>
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-mainText">Zero-Trust Approval Control</h3>
+          </div>
+          <p class="text-xs text-secText leading-relaxed">
+            External actions (Email, SMS, Calendar) always pause for your explicit permission in the Approval Center.
+          </p>
+        </div>
+
+        <div class="bg-surface p-3.5 rounded-2xl border border-slate-800/80">
+          <div class="flex items-center gap-2.5 mb-1">
+            <span class="text-emerald-400 text-base">🔒</span>
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-mainText">Privacy & AI Service Disclosure</h3>
+          </div>
+          <p class="text-xs text-secText leading-relaxed">
+            Running in <strong class="text-electric">Offline Demo Mode</strong> by default. No private credentials are stored in the client, and long-term memory is saved only with your approval.
+          </p>
+        </div>
+      </div>
+
+      <button onclick="completeOnboarding()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-electric to-violet text-navy font-bold text-sm shadow-lg shadow-electric/20 active:scale-[0.98] transition">
+        Initialize Kriovyn Workspace
+      </button>
+    </div>
+
+    <!-- TOP STATUS HEADER -->
+    <header class="px-4 pt-4 pb-3 bg-navy/95 border-b border-slate-800/80 flex items-center justify-between shrink-0 z-20">
+      <div class="flex items-center gap-2.5 cursor-pointer" onclick="navigate('home')">
+        <!-- Mini Logo -->
+        <svg class="w-7 h-7" viewBox="0 0 100 100" fill="none">
+          <path d="M47 22C34 22 24 31 24 43C24 47 25.5 51 28 54C25 57 23 61 23 66C23 75 30 82 39 82H47V22Z" stroke="#80D8FF" stroke-width="5"/>
+          <path d="M53 22C66 22 76 31 76 43C76 47 74.5 51 72 54C75 57 77 61 77 66C77 75 70 82 61 82H53V22Z" stroke="#9178FF" stroke-width="5"/>
+          <circle cx="50" cy="52" r="6" fill="#F5F7FF"/>
+        </svg>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="font-bold text-sm tracking-tight">Kriovyn AI</span>
+            <span id="headerScreenBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-surfaceLight text-secText font-medium">Home</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- Connection Status Pill -->
+        <button onclick="navigate('status')" id="aiStatusPill" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300 text-[10px] font-semibold">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="aiStatusText">Demo Mode</span>
+        </button>
+
+        <!-- Pending Approval Badge -->
+        <button onclick="navigate('approvals')" class="relative p-2 rounded-xl bg-surface hover:bg-surfaceLight border border-slate-800 transition" title="Tool Approval Center">
+          <span class="text-xs">🛡️</span>
+          <span id="approvalBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">0</span>
+        </button>
+
+        <!-- All Modules Drawer Button -->
+        <button onclick="toggleModuleDrawer()" class="p-2 rounded-xl bg-surface hover:bg-surfaceLight border border-slate-800 transition" title="All Modules">
+          <svg class="w-4 h-4 text-electric" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- MODULE DRAWER OVERLAY -->
+    <div id="moduleDrawer" class="hidden absolute inset-0 z-30 bg-navy/95 backdrop-blur-md p-5 flex flex-col justify-between overflow-y-auto">
+      <div>
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <h2 class="text-base font-bold text-mainText">Kriovyn Architecture</h2>
+            <p class="text-xs text-secText">Select an intelligence or productivity module</p>
+          </div>
+          <button onclick="toggleModuleDrawer()" class="w-8 h-8 rounded-full bg-surface flex items-center justify-center text-secText hover:text-mainText">✕</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <button onclick="navigate('home'); toggleModuleDrawer()" class="p-3.5 rounded-2xl bg-surface border border-slate-800 text-left hover:border-electric/50 transition">
+            <div class="text-lg mb-1">🏠</div>
+            <div class="text-xs font-semibold">Home Dashboard</div>
+            <div class="text-[10px] text-secText">Overview & shortcuts</div>
+          </button>
+          <button onclick="navigate('chat'); toggleModuleDrawer()" class="p-3.5 rounded-2xl bg-surface border border-slate-800 text-left hover:border-electric/50 transition">
+            <div class="text-lg mb-1">💬</div>
+            <div class="text-xs font-semibold">AI Chat & History</div>
+            <div class="text-[10px] text-secText">Conversational agent</div>
+          </button>
+          <button onclick="navigate('workspace'); toggleModuleDrawer()" class="p-3.5 rounded-2xl bg-surface border border-slate-800 text-left hover:border-electric/50 transition">
+            <div class="text-lg mb-1">🧠</div>
+            <div class="text-xs font-semibold">Agent Workspace</div>
+            <div class="text-[10px] text-secText">Plans & tool execution</div>
+          </button>
+          <button onclick="navigate('approvals'); toggleModuleDrawer()" class="p-3.5 rounded-2xl bg-surface border border-slate-800 text-left hover:border-electric/50 transition">
+            <div class="text-lg mb-1">🛡️</div>
+            <div class="text-xs font-semibold">Approval Center</div>
+            <div class="text-[10px] text-secText">Group B action security</div>
+          </button>
+          <button onclick="navigate('tasks'); toggleModuleDrawer()" class="p-3.5 rounded-2xl bg-surface border border-slate-800 text-left hover:border-electric/50 transition">
+            <div class="text-lg mb-1">✅</div>
+            <div class="text-xs font-semibold">Task Manager</div>
+            <div class="text-[10px] text-secText">Priorities & reminders</div>
+          </button>
+          <button onclick="navigate('notes'); toggleModuleDrawer()" class="p-3.5 rounded-2xl bg-surface border border-slate-800 text-left hover:border-electric/50 transition">
+            <div class="text-lg mb-1">📝</div>
+            <div class="text-xs font-semibold">Notes Manager</div>
+            <div class="text-[10px] text-secText">Categorized knowledge</div>
+          </button>
+          <button onclick="navigate('memory'); toggleModuleDrawer()" class="p-3.5 rounded-2xl bg-surface border border-slate-800 text-left hover:border-electric/50 transition">
+            <div class="text-lg mb-1">🧬</div>
+            <div class="text-xs font-semibold">Personal Memory</div>
+            <div class="text-[10px] text-secText">User-approved context</div>
+          </button>
+          <button onclick="navigate('voice'); toggleModuleDrawer()" class="p-3.5 rounded-2xl bg-surface border border-slate-800 text-left hover:border-electric/50 transition">
+            <div class="text-lg mb-1">🎙️</div>
+            <div class="text-xs font-semibold">Voice Assistant</div>
+            <div class="text-[10px] text-secText">Foreground STT / TTS</div>
+          </button>
+          <button onclick="navigate('docs'); toggleModuleDrawer()" class="p-3.5 rounded-2xl bg-surface border border-slate-800 text-left hover:border-electric/50 transition">
+            <div class="text-lg mb-1">📄</div>
+            <div class="text-xs font-semibold">Document Assistant</div>
+            <div class="text-[10px] text-secText">Summarize & Q&A</div>
+          </button>
+          <button onclick="navigate('status'); toggleModuleDrawer()" class="p-3.5 rounded-2xl bg-surface border border-slate-800 text-left hover:border-electric/50 transition">
+            <div class="text-lg mb-1">📡</div>
+            <div class="text-xs font-semibold">AI Connection Status</div>
+            <div class="text-[10px] text-secText">Backend & model health</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+        <button onclick="navigate('settings'); toggleModuleDrawer()" class="flex items-center gap-2 text-xs font-semibold text-electric">
+          <span>⚙️ Settings & Data Export</span>
+        </button>
+        <button onclick="showOnboarding()" class="text-[11px] text-secText underline">View Disclosures</button>
+      </div>
+    </div>
+
+    <!-- MAIN SCROLLABLE VIEWPORT -->
+    <main id="mainContent" class="flex-1 overflow-y-auto no-scrollbar p-4 space-y-4">
+
+      <!-- ==================== 1. HOME DASHBOARD ==================== -->
+      <section id="screen-home" class="screen space-y-4">
+        <!-- Greeting Card -->
+        <div class="p-4 rounded-3xl bg-gradient-to-br from-surface via-surface to-violet/15 border border-slate-800">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] font-medium text-electric">Kriovyn Core v1.0 • Local Engine Ready</span>
+            <span class="text-[11px] text-secText" id="homeDate">Today</span>
+          </div>
+          <h2 class="text-xl font-bold text-mainText">Welcome back, Commander</h2>
+          <p class="text-xs text-secText mt-0.5">Think Beyond. Act Smarter. How can I assist you today?</p>
+
+          <!-- Quick Chat Prompt Input -->
+          <form onsubmit="handleQuickHomePrompt(event)" class="mt-3.5 flex items-center gap-2 bg-navy/90 border border-slate-700/80 rounded-2xl p-1.5 pl-3">
+            <input id="homeQuickInput" type="text" placeholder="Ask Kriovyn or command a tool..." class="bg-transparent text-xs text-mainText placeholder-secText flex-1 focus:outline-none" />
+            <button type="submit" class="px-3 py-2 rounded-xl bg-electric text-navy font-bold text-xs hover:opacity-90 transition">
+              Run
+            </button>
+          </form>
+        </div>
+
+        <!-- Quick Action Grid -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-secText">Agent Modules</h3>
+            <button onclick="toggleModuleDrawer()" class="text-[11px] text-electric font-medium">View All (11)</button>
+          </div>
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="navigate('chat')" class="p-2.5 rounded-2xl bg-surface border border-slate-800 flex flex-col items-center gap-1 hover:border-electric/50 transition">
+              <span class="text-lg">💬</span>
+              <span class="text-[10px] font-medium">AI Chat</span>
+            </button>
+            <button onclick="navigate('workspace')" class="p-2.5 rounded-2xl bg-surface border border-slate-800 flex flex-col items-center gap-1 hover:border-electric/50 transition">
+              <span class="text-lg">🧠</span>
+              <span class="text-[10px] font-medium">Planner</span>
+            </button>
+            <button onclick="navigate('voice')" class="p-2.5 rounded-2xl bg-surface border border-slate-800 flex flex-col items-center gap-1 hover:border-electric/50 transition">
+              <span class="text-lg">🎙️</span>
+              <span class="text-[10px] font-medium">Voice</span>
+            </button>
+            <button onclick="navigate('docs')" class="p-2.5 rounded-2xl bg-surface border border-slate-800 flex flex-col items-center gap-1 hover:border-electric/50 transition">
+              <span class="text-lg">📄</span>
+              <span class="text-[10px] font-medium">Docs</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pending Approvals Alert (Dynamic) -->
+        <div id="homeApprovalBanner" class="hidden p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="text-lg">🛡️</span>
+            <div>
+              <div class="text-xs font-bold text-rose-300">Action Authorization Required</div>
+              <div id="homeApprovalCountText" class="text-[11px] text-secText">1 external tool awaiting review</div>
+            </div>
+          </div>
+          <button onclick="navigate('approvals')" class="px-3 py-1.5 rounded-xl bg-rose-500 text-white text-xs font-semibold">Review</button>
+        </div>
+
+        <!-- Today's Tasks Summary -->
+        <div class="p-4 rounded-3xl bg-surface border border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-mainText">Priority Tasks</h3>
+            <button onclick="navigate('tasks')" class="text-[11px] text-electric font-medium">Manage →</button>
+          </div>
+          <div id="homeTasksList" class="space-y-2"></div>
+        </div>
+
+        <!-- Recent Conversations -->
+        <div class="p-4 rounded-3xl bg-surface border border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-mainText">Recent Sessions</h3>
+            <button onclick="navigate('chat')" class="text-[11px] text-violet font-medium">Open Chat →</button>
+          </div>
+          <div id="homeSessionsList" class="space-y-2"></div>
+        </div>
+      </section>
+
+      <!-- ==================== 2. AI CHAT & CONVERSATION HISTORY ==================== -->
+      <section id="screen-chat" class="screen hidden flex flex-col h-full">
+        <!-- Chat Top Controls -->
+        <div class="flex items-center justify-between pb-2.5 border-b border-slate-800 shrink-0">
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+            <button onclick="createNewSession()" class="px-2.5 py-1.5 rounded-xl bg-electric/15 border border-electric/30 text-electric text-[11px] font-semibold shrink-0">
+              + New Chat
+            </button>
+            <select id="sessionSelector" onchange="switchSession(this.value)" class="bg-surface border border-slate-700 text-mainText text-[11px] rounded-xl px-2.5 py-1.5 max-w-[160px] focus:outline-none">
+            </select>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="renameCurrentSession()" class="p-1.5 rounded-lg bg-surface text-secText hover:text-mainText text-xs" title="Rename Session">✏️</button>
+            <button onclick="deleteCurrentSession()" class="p-1.5 rounded-lg bg-surface text-secText hover:text-rose-400 text-xs" title="Delete Session">🗑️</button>
+          </div>
+        </div>
+
+        <!-- Suggested Agent Prompts -->
+        <div class="flex gap-1.5 overflow-x-auto no-scrollbar py-2 shrink-0">
+          <button onclick="sendSuggestedPrompt('Create a high priority task to finalize Kriovyn API schema')" class="px-3 py-1.5 rounded-full bg-surface border border-slate-700 text-[11px] text-electric whitespace-nowrap hover:border-electric">
+            + Create Task (Group A)
+          </button>
+          <button onclick="sendSuggestedPrompt('Prepare an email to alex@kriovyn.ai regarding Q4 launch')" class="px-3 py-1.5 rounded-full bg-surface border border-slate-700 text-[11px] text-violet whitespace-nowrap hover:border-violet">
+            ✉️ Prepare Email (Group B Approval)
+          </button>
+          <button onclick="sendSuggestedPrompt('Save note: Architecture uses Room + MVVM + Allowlisted Tools')" class="px-3 py-1.5 rounded-full bg-surface border border-slate-700 text-[11px] text-emerald-300 whitespace-nowrap hover:border-emerald-400">
+            📝 Save Note
+          </button>
+          <button onclick="sendSuggestedPrompt('Remember that I prefer concise technical summaries')" class="px-3 py-1.5 rounded-full bg-surface border border-slate-700 text-[11px] text-amber-300 whitespace-nowrap hover:border-amber-400">
+            🧬 Save Memory
+          </button>
+        </div>
+
+        <!-- Messages Container -->
+        <div id="chatMessages" class="flex-1 overflow-y-auto no-scrollbar space-y-3 py-2"></div>
+
+        <!-- Agent Thinking / Tool Execution Status Bar -->
+        <div id="chatThinkingBar" class="hidden py-2 px-3 mb-2 rounded-2xl bg-surfaceLight border border-electric/30 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-electric animate-ping"></span>
+            <span id="chatThinkingText" class="text-[11px] text-electric font-medium">AgentPlanner analyzing intent...</span>
+          </div>
+          <button onclick="stopGeneration()" class="text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-semibold">Stop</button>
+        </div>
+
+        <!-- Chat Input Bar -->
+        <form onsubmit="handleChatSubmit(event)" class="pt-2 border-t border-slate-800 flex items-center gap-1.5 shrink-0">
+          <button type="button" onclick="navigate('docs')" class="p-2.5 rounded-xl bg-surface border border-slate-800 text-secText hover:text-electric" title="Attach Document">
+            📎
+          </button>
+          <button type="button" onclick="navigate('voice')" class="p-2.5 rounded-xl bg-surface border border-slate-800 text-secText hover:text-electric" title="Voice Input">
+            🎙️
+          </button>
+          <input id="chatInput" type="text" placeholder="Message Kriovyn AI..." class="flex-1 bg-surface border border-slate-700 rounded-2xl px-3.5 py-2.5 text-xs text-mainText placeholder-secText focus:outline-none focus:border-electric" />
+          <button type="submit" class="p-2.5 px-3.5 rounded-2xl bg-gradient-to-r from-electric to-violet text-navy font-bold text-xs shadow">
+            Send
+          </button>
+        </form>
+      </section>
+
+      <!-- ==================== 3. AGENT WORKSPACE ==================== -->
+      <section id="screen-workspace" class="screen hidden space-y-4">
+        <div class="p-4 rounded-3xl bg-surface border border-slate-800">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-violet/20 text-violet">AgentOrchestrator Live</span>
+            <span class="text-[11px] text-secText">Max 5 tools/req</span>
+          </div>
+          <h2 class="text-base font-bold text-mainText">Execution Plan & Tool Pipeline</h2>
+          <p class="text-xs text-secText mt-1">Inspect structured intent analysis, allowlisted tool selection, and execution outcomes.</p>
+        </div>
+
+        <div id="workspaceExecutionCard" class="p-4 rounded-3xl bg-surface border border-slate-800 space-y-3">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Registered Tool Allowlist -->
+        <div class="p-4 rounded-3xl bg-surface border border-slate-800 space-y-2.5">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-mainText">Registered Android Tool Allowlist</h3>
+          <p class="text-[11px] text-secText">Only validated tools in this registry can be invoked by the AI engine.</p>
+          <div id="toolRegistryList" class="space-y-2 pt-1"></div>
+        </div>
+      </section>
+
+      <!-- ==================== 4. TASK MANAGER ==================== -->
+      <section id="screen-tasks" class="screen hidden space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-base font-bold">Task Manager</h2>
+            <p class="text-[11px] text-secText">Local Room storage & AI-created tasks</p>
+          </div>
+          <button onclick="toggleTaskForm()" class="px-3 py-1.5 rounded-xl bg-electric text-navy text-xs font-bold">+ New Task</button>
+        </div>
+
+        <!-- Add Task Form -->
+        <form id="taskForm" onsubmit="addTaskFromForm(event)" class="hidden p-4 rounded-3xl bg-surface border border-electric/40 space-y-3">
+          <input id="taskTitleInput" type="text" required placeholder="Task title..." class="w-full bg-navy border border-slate-700 rounded-xl px-3 py-2 text-xs text-mainText focus:outline-none" />
+          <div class="grid grid-cols-2 gap-2">
+            <select id="taskPriorityInput" class="bg-navy border border-slate-700 rounded-xl px-3 py-2 text-xs text-mainText">
+              <option value="HIGH">HIGH Priority</option>
+              <option value="MEDIUM" selected>MEDIUM Priority</option>
+              <option value="LOW">LOW Priority</option>
+            </select>
+            <input id="taskDateInput" type="date" class="bg-navy border border-slate-700 rounded-xl px-3 py-2 text-xs text-mainText" />
+          </div>
+          <div class="flex justify-end gap-2">
+            <button type="button" onclick="toggleTaskForm()" class="px-3 py-1.5 rounded-xl bg-surfaceLight text-xs text-secText">Cancel</button>
+            <button type="submit" class="px-4 py-1.5 rounded-xl bg-electric text-navy font-bold text-xs">Save Task</button>
+          </div>
+        </form>
+
+        <!-- Search & Filter -->
+        <div class="flex gap-2">
+          <input id="taskSearchInput" oninput="renderTasks()" type="text" placeholder="Search tasks..." class="flex-1 bg-surface border border-slate-800 rounded-xl px-3 py-2 text-xs text-mainText focus:outline-none" />
+          <select id="taskFilterSelect" onchange="renderTasks()" class="bg-surface border border-slate-800 rounded-xl px-2.5 py-2 text-xs text-mainText">
+            <option value="ALL">All</option>
+            <option value="PENDING">Pending</option>
+            <option value="COMPLETED">Completed</option>
+          </select>
+        </div>
+
+        <div id="tasksContainer" class="space-y-2.5"></div>
+      </section>
+
+      <!-- ==================== 5. NOTES MANAGER ==================== -->
+      <section id="screen-notes" class="screen hidden space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-base font-bold">Notes Manager</h2>
+            <p class="text-[11px] text-secText">Structured knowledge & AI insights</p>
+          </div>
+          <button onclick="toggleNoteForm()" class="px-3 py-1.5 rounded-xl bg-violet text-white text-xs font-bold">+ New Note</button>
+        </div>
+
+        <form id="noteForm" onsubmit="saveNoteFromForm(event)" class="hidden p-4 rounded-3xl bg-surface border border-violet/40 space-y-3">
+          <input type="hidden" id="editNoteId" value="" />
+          <input id="noteTitleInput" type="text" required placeholder="Note title..." class="w-full bg-navy border border-slate-700 rounded-xl px-3 py-2 text-xs text-mainText" />
+          <select id="noteCategoryInput" class="w-full bg-navy border border-slate-700 rounded-xl px-3 py-2 text-xs text-mainText">
+            <option value="General">General</option>
+            <option value="Architecture">Architecture</option>
+            <option value="AI Research">AI Research</option>
+            <option value="Personal">Personal</option>
+          </select>
+          <textarea id="noteContentInput" rows="3" required placeholder="Write note content..." class="w-full bg-navy border border-slate-700 rounded-xl px-3 py-2 text-xs text-mainText"></textarea>
+          <div class="flex justify-end gap-2">
+            <button type="button" onclick="toggleNoteForm()" class="px-3 py-1.5 rounded-xl bg-surfaceLight text-xs text-secText">Cancel</button>
+            <button type="submit" class="px-4 py-1.5 rounded-xl bg-violet text-white font-bold text-xs">Save Note</button>
+          </div>
+        </form>
+
+        <input id="noteSearchInput" oninput="renderNotes()" type="text" placeholder="Search notes by title, content, or category..." class="w-full bg-surface border border-slate-800 rounded-xl px-3 py-2 text-xs text-mainText focus:outline-none" />
+
+        <div id="notesContainer" class="space-y-2.5"></div>
+      </section>
+
+      <!-- ==================== 6. PERSONAL MEMORY ENGINE ==================== -->
+      <section id="screen-memory" class="screen hidden space-y-4">
+        <div class="p-4 rounded-3xl bg-surface border border-slate-800">
+          <div class="flex items-center justify-between mb-1">
+            <h2 class="text-base font-bold">Personal Memory Engine</h2>
+            <button onclick="clearAllMemories()" class="text-[11px] text-rose-400 font-semibold">Clear All</button>
+          </div>
+          <p class="text-xs text-secText">Long-term memory is strictly user-approved. Kriovyn never silently harvests private chats.</p>
+        </div>
+
+        <form onsubmit="addMemoryFromForm(event)" class="p-3.5 rounded-2xl bg-surface border border-slate-800 space-y-2">
+          <div class="flex gap-2">
+            <select id="memoryCategoryInput" class="bg-navy border border-slate-700 rounded-xl px-2.5 py-2 text-xs text-mainText">
+              <option value="Preferences">Preferences</option>
+              <option value="Work & Study Goals">Work & Study Goals</option>
+              <option value="Instructions">Instructions</option>
+              <option value="Interests">Interests</option>
+            </select>
+            <input id="memoryContentInput" type="text" required placeholder="Add approved fact or preference..." class="flex-1 bg-navy border border-slate-700 rounded-xl px-3 py-2 text-xs text-mainText" />
+          </div>
+          <button type="submit" class="w-full py-2 rounded-xl bg-electric/15 border border-electric/30 text-electric text-xs font-semibold">
+            + Approve & Store Memory
+          </button>
+        </form>
+
+        <input id="memorySearchInput" oninput="renderMemories()" type="text" placeholder="Search approved memories..." class="w-full bg-surface border border-slate-800 rounded-xl px-3 py-2 text-xs text-mainText" />
+
+        <div id="memoryContainer" class="space-y-2.5"></div>
+      </section>
+
+      <!-- ==================== 7. TOOL APPROVAL CENTER ==================== -->
+      <section id="screen-approvals" class="screen hidden space-y-4">
+        <div class="p-4 rounded-3xl bg-surface border border-slate-800">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-lg">🛡️</span>
+            <h2 class="text-base font-bold">Tool Approval Center</h2>
+          </div>
+          <p class="text-xs text-secText">
+            <strong>Group B Security Policy:</strong> External Android actions (Email, SMS, Calendar, Dialer) require explicit user authorization before intent dispatch.
+          </p>
+        </div>
+
+        <div id="approvalsContainer" class="space-y-3"></div>
+      </section>
+
+      <!-- ==================== 8. VOICE ASSISTANT ==================== -->
+      <section id="screen-voice" class="screen hidden space-y-4">
+        <div class="p-5 rounded-3xl bg-surface border border-slate-800 flex flex-col items-center text-center space-y-4">
+          <span class="px-3 py-1 rounded-full bg-electric/10 text-electric text-[10px] font-semibold uppercase tracking-wider">
+            Foreground Speech Engine
+          </span>
+          <h2 class="text-lg font-bold">Kriovyn Voice Interface</h2>
+          <p class="text-xs text-secText max-w-xs">
+            Microphone activates strictly on tap. No background listening is ever performed.
+          </p>
+
+          <!-- Animated Microphone Orb -->
+          <div class="relative py-6">
+            <div id="voicePulseRing" class="hidden absolute inset-0 rounded-full bg-electric/25 animate-pulse-ring"></div>
+            <button id="voiceRecordBtn" onclick="toggleVoiceRecording()" class="relative z-10 w-24 h-24 rounded-full bg-gradient-to-br from-electric to-violet text-navy flex flex-col items-center justify-center shadow-lg shadow-electric/25 active:scale-95 transition">
+              <span class="text-3xl" id="voiceMicIcon">🎙️</span>
+              <span class="text-[10px] font-bold mt-1" id="voiceBtnLabel">TAP TO SPEAK</span>
+            </button>
+          </div>
+
+          <div id="voiceTranscriptBox" class="w-full p-3.5 rounded-2xl bg-navy border border-slate-800 text-left min-h-[84px]">
+            <div class="text-[10px] uppercase tracking-wider text-secText mb-1">Live Speech-to-Text Transcript</div>
+            <p id="voiceTranscriptText" class="text-xs text-mainText italic">Press the microphone button to start a foreground voice command...</p>
+          </div>
+
+          <!-- Sample Voice Simulation Trigger -->
+          <div class="w-full flex flex-wrap gap-2 justify-center">
+            <button onclick="simulateVoicePhrase('Create a task to review Android Room migrations')" class="px-3 py-1.5 rounded-xl bg-surfaceLight text-[11px] text-electric border border-slate-700">
+              Simulate: "Create task..."
+            </button>
+            <button onclick="simulateVoicePhrase('Prepare an SMS to Mom saying I will reach by 7 PM')" class="px-3 py-1.5 rounded-xl bg-surfaceLight text-[11px] text-violet border border-slate-700">
+              Simulate: "Prepare SMS..."
+            </button>
+          </div>
+
+          <!-- TTS Controls -->
+          <div class="w-full pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-secText">Spoken AI Responses (TTS)</span>
+            <label class="inline-flex items-center cursor-pointer">
+              <input id="ttsToggle" type="checkbox" checked class="sr-only peer" onchange="showToast('TTS setting updated')">
+              <div class="w-9 h-5 bg-slate-700 peer-checked:bg-electric rounded-full relative transition">
+                <span class="w-3.5 h-3.5 bg-navy rounded-full absolute top-0.5 left-1 peer-checked:translate-x-4 transition"></span>
+              </div>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 9. DOCUMENT ASSISTANT ==================== -->
+      <section id="screen-docs" class="screen hidden space-y-4">
+        <div class="p-4 rounded-3xl bg-surface border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-base font-bold">Document Assistant</h2>
+              <p class="text-[11px] text-secText">Storage Access Framework • TXT & PDF Extractor</p>
+            </div>
+            <label class="px-3 py-1.5 rounded-xl bg-electric text-navy font-bold text-xs cursor-pointer">
+              Upload TXT
+              <input type="file" accept=".txt,.md,.json,.csv" onchange="handleDocFileUpload(event)" class="hidden" />
+            </label>
+          </div>
+
+          <!-- Load Sample Document Button -->
+          <div class="flex gap-2">
+            <button onclick="loadSampleDocument()" class="flex-1 py-2 rounded-xl bg-surfaceLight border border-slate-700 text-xs text-electric font-medium">
+              Load Sample Architecture Spec
+            </button>
+            <button onclick="clearDocument()" class="px-3 py-2 rounded-xl bg-rose-500/15 text-rose-300 text-xs font-medium">
+              Clear
+            </button>
+          </div>
+
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-secText mb-1">Extracted Document Content</div>
+            <textarea id="docContentArea" rows="5" placeholder="Upload a text file, load sample spec, or paste document text here..." class="w-full bg-navy border border-slate-700 rounded-2xl p-3 text-xs text-mainText focus:outline-none"></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="analyzeDocument('summary')" class="py-2.5 rounded-xl bg-gradient-to-r from-electric to-violet text-navy font-bold text-xs">
+              Summarize Document
+            </button>
+            <button onclick="analyzeDocument('keypoints')" class="py-2.5 rounded-xl bg-surfaceLight border border-electric/40 text-electric font-semibold text-xs">
+              Extract Key Points
+            </button>
+          </div>
+        </div>
+
+        <!-- Document Q&A and Output -->
+        <div id="docOutputCard" class="hidden p-4 rounded-3xl bg-surface border border-electric/30 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span id="docOutputTitle" class="text-xs font-bold text-electric">Document Analysis</span>
+            <button onclick="saveDocAnalysisToNotes()" class="text-[11px] px-2.5 py-1 rounded-lg bg-violet/20 text-violet font-semibold">Save to Notes</button>
+          </div>
+          <p id="docOutputText" class="text-xs text-mainText leading-relaxed whitespace-pre-line"></p>
+        </div>
+      </section>
+
+      <!-- ==================== 10. AI CONNECTION STATUS ==================== -->
+      <section id="screen-status" class="screen hidden space-y-4">
+        <div class="p-4 rounded-3xl bg-surface border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold">AI Connection Status</h2>
+            <span id="statusBadgeLarge" class="px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 text-xs font-bold">Offline Demo Mode</span>
+          </div>
+          <p class="text-xs text-secText">
+            Kriovyn AI never fakes a cloud connection. When no FastAPI backend is reachable, local intelligence and tools operate cleanly offline.
+          </p>
+
+          <div class="space-y-2 pt-2 text-xs">
+            <div class="flex justify-between p-2.5 rounded-xl bg-navy">
+              <span class="text-secText">Active Provider</span>
+              <span id="diagProvider" class="font-semibold text-electric">DemoAiProvider (Local)</span>
+            </div>
+            <div class="flex justify-between p-2.5 rounded-xl bg-navy">
+              <span class="text-secText">Backend Endpoint</span>
+              <span id="diagEndpoint" class="font-mono text-[11px] text-mainText">Not Configured</span>
+            </div>
+            <div class="flex justify-between p-2.5 rounded-xl bg-navy">
+              <span class="text-secText">API Key Exposure Check</span>
+              <span class="font-semibold text-emerald-400">0 Keys in Client (Secure)</span>
+            </div>
+            <div class="flex justify-between p-2.5 rounded-xl bg-navy">
+              <span class="text-secText">Last Probe Result</span>
+              <span id="diagLastResult" class="text-amber-300">Using deterministic offline engine</span>
+            </div>
+          </div>
+
+          <button onclick="testBackendConnection()" class="w-full py-2.5 rounded-xl bg-electric text-navy font-bold text-xs">
+            Test Backend Connection
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== 11. SETTINGS & DATA MANAGEMENT ==================== -->
+      <section id="screen-settings" class="screen hidden space-y-4">
+        <h2 class="text-base font-bold">Settings & Security Controls</h2>
+
+        <!-- Appearance -->
+        <div class="p-4 rounded-3xl bg-surface border border-slate-800 flex items-center justify-between">
+          <div>
+            <div class="text-xs font-bold">Midnight Navy Dark Theme</div>
+            <div class="text-[11px] text-secText">Toggle between Dark and Light mode</div>
+          </div>
+          <button onclick="toggleTheme()" id="themeToggleBtn" class="px-3 py-1.5 rounded-xl bg-electric/15 border border-electric/30 text-electric text-xs font-semibold">
+            Dark Active
+          </button>
+        </div>
+
+        <!-- FastAPI Backend Configuration -->
+        <div class="p-4 rounded-3xl bg-surface border border-slate-800 space-y-2.5">
+          <div class="text-xs font-bold">Secure FastAPI Backend Adapter</div>
+          <p class="text-[11px] text-secText">Connect your Python FastAPI Gemini proxy URL. Leave blank to stay in Offline Demo Mode.</p>
+          <input id="backendUrlInput" type="url" placeholder="https://api.yourdomain.com/v1/agent" class="w-full bg-navy border border-slate-700 rounded-xl px-3 py-2 text-xs text-mainText" />
+          <button onclick="saveBackendUrl()" class="w-full py-2 rounded-xl bg-violet text-white font-semibold text-xs">
+            Save Provider Configuration
+          </button>
+        </div>
+
+        <!-- Data Export & Clear -->
+        <div class="p-4 rounded-3xl bg-surface border border-slate-800 space-y-2.5">
+          <div class="text-xs font-bold">Local Room Database Controls</div>
+          <button onclick="exportAllData()" class="w-full py-2.5 rounded-xl bg-surfaceLight border border-slate-700 text-xs font-semibold text-electric">
+            Export All Local Data (JSON)
+          </button>
+          <button onclick="resetAllLocalData()" class="w-full py-2.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-xs font-semibold text-rose-400">
+            Clear All Local Data & Reset
+          </button>
+        </div>
+
+        <div class="text-center text-[11px] text-secText pb-4">
+          Kriovyn AI • Package: <code>com.kriovyn.aiagent</code><br/>
+          Think Beyond. Act Smarter.
+        </div>
+      </section>
+
+    </main>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <nav class="px-3 py-2.5 bg-surface/95 border-t border-slate-800 grid grid-cols-5 gap-1 shrink-0 z-20">
+      <button onclick="navigate('home')" data-nav="home" class="nav-btn flex flex-col items-center gap-0.5 py-1 rounded-xl text-electric">
+        <span class="text-base">🏠</span>
+        <span class="text-[10px] font-semibold">Home</span>
+      </button>
+      <button onclick="navigate('chat')" data-nav="chat" class="nav-btn flex flex-col items-center gap-0.5 py-1 rounded-xl text-secText">
+        <span class="text-base">💬</span>
+        <span class="text-[10px] font-medium">Chat</span>
+      </button>
+      <button onclick="navigate('workspace')" data-nav="workspace" class="nav-btn flex flex-col items-center gap-0.5 py-1 rounded-xl text-secText">
+        <span class="text-base">🧠</span>
+        <span class="text-[10px] font-medium">Agent</span>
+      </button>
+      <button onclick="navigate('tasks')" data-nav="tasks" class="nav-btn flex flex-col items-center gap-0.5 py-1 rounded-xl text-secText">
+        <span class="text-base">✅</span>
+        <span class="text-[10px] font-medium">Tasks</span>
+      </button>
+      <button onclick="navigate('notes')" data-nav="notes" class="nav-btn flex flex-col items-center gap-0.5 py-1 rounded-xl text-secText">
+        <span class="text-base">📝</span>
+        <span class="text-[10px] font-medium">Notes</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- APPLICATION LOGIC & AGENT ENGINE -->
+  <script>
+    // ==================== REGISTERED TOOL ALLOWLIST ====================
+    const TOOL_REGISTRY = [
+      { id: 'CreateTaskTool', group: 'Group A (Local)', desc: 'Creates a prioritized task in local Room storage.' },
+      { id: 'SaveNoteTool', group: 'Group A (Local)', desc: 'Saves structured notes into local database.' },
+      { id: 'SaveApprovedMemoryTool', group: 'Group A (Approved)', desc: 'Stores long-term personal context after consent.' },
+      { id: 'PrepareEmailTool', group: 'Group B (Approval Required)', desc: 'Prepares Android ACTION_SENDTO email intent.' },
+      { id: 'PrepareSmsTool', group: 'Group B (Approval Required)', desc: 'Prepares Android SMS compose intent.' },
+      { id: 'CreateCalendarEventTool', group: 'Group B (Approval Required)', desc: 'Opens CalendarContract event insertion form.' },
+      { id: 'OpenWebSearchTool', group: 'Group B (External)', desc: 'Launches browser intent for web search.' }
+    ];
+
+    // ==================== STATE MANAGEMENT & STORAGE ====================
+    const STORAGE_KEY = 'kriovyn_ai_state_v1';
+
+    const defaultState = {
+      onboarded: false,
+      theme: 'dark',
+      backendUrl: '',
+      currentScreen: 'home',
+      currentSessionId: 'sess_1',
+      sessions: [
+        {
+          id: 'sess_1',
+          title: 'Architecture & Planning',
+          messages: [
+            {
+              id: 'm1',
+              role: 'ai',
+              text: 'Welcome to Kriovyn AI! I am operating in Offline Demo Mode with full access to your local Tasks, Notes, Personal Memory, and Tool Approval Engine. Try asking me to create a task or prepare an email.',
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              toolUsed: null
+            }
+          ]
+        }
+      ],
+      tasks: [
+        { id: 't1', title: 'Review Kriovyn MVVM & Room Schema', priority: 'HIGH', dueDate: '2026-11-18', completed: false },
+        { id: 't2', title: 'Verify Group B Tool Approval Policy', priority: 'MEDIUM', dueDate: '2026-11-19', completed: false },
+        { id: 't3', title: 'Initialize Android Project Structure', priority: 'LOW', dueDate: '2026-11-16', completed: true }
+      ],
+      notes: [
+        { id: 'n1', title: 'Kriovyn Security Guardrails', category: 'Architecture', content: 'Never embed raw Gemini API keys in the APK. Route production traffic through FastAPI backend and require explicit user approval for Group B intents.', updatedAt: 'Today' },
+        { id: 'n2', title: 'Agent Execution Loop', category: 'AI Research', content: '1. Intent Recognition -> 2. Context & Memory Retrieval -> 3. Structured Plan -> 4. Allowlist Validation -> 5. Approval Check -> 6. Execution.', updatedAt: 'Yesterday' }
+      ],
+      memories: [
+        { id: 'mem1', category: 'Preferences', content: 'Prefers concise, structured engineering explanations.', approved: true },
+        { id: 'mem2', category: 'Work & Study Goals', content: 'Building Kriovyn AI personal assistant for Android using Kotlin & Jetpack Compose.', approved: true }
+      ],
+      approvals: [
+        {
+          id: 'app_init_1',
+          toolId: 'CreateCalendarEventTool',
+          actionName: 'Schedule Architecture Review',
+          reason: 'User requested a calendar reminder for Kriovyn Phase 2 milestone.',
+          dataInvolved: 'Title: Kriovyn Phase 2 Sync | Time: Tomorrow 10:00 AM',
+          permission: 'android.intent.action.INSERT (CalendarContract)',
+          status: 'PENDING'
+        }
+      ],
+      lastExecution: {
+        request: 'System Initialization',
+        intent: 'HEALTH_CHECK',
+        reasoningSummary: 'Verified local Room storage, loaded user-approved memories, and confirmed DemoAiProvider readiness.',
+        steps: [
+          { step: 'Validate ToolRegistry allowlist (7 tools registered)', status: 'COMPLETED' },
+          { step: 'Load user-approved memories (2 active)', status: 'COMPLETED' },
+          { step: 'Check backend connectivity (Offline Demo Mode active)', status: 'COMPLETED' }
+        ],
+        selectedTool: 'None (Direct System Check)',
+        result: 'All local modules operational.'
+      }
+    };
+
+    let state = loadState();
+    let generationTimer = null;
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? { ...defaultState, ...JSON.parse(raw) } : structuredClone(defaultState);
+      } catch (e) {
+        return structuredClone(defaultState);
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      updateBadges();
+    }
+
+    // ==================== INITIALIZATION ====================
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('homeDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      applyTheme(state.theme);
+      if (!state.onboarded) {
+        document.getElementById('onboardingOverlay').classList.remove('hidden');
+      }
+      if (state.backendUrl) {
+        document.getElementById('backendUrlInput').value = state.backendUrl;
+      }
+      renderAll();
+      navigate(state.currentScreen || 'home');
+    });
+
+    function completeOnboarding() {
+      state.onboarded = true;
+      saveState();
+      document.getElementById('onboardingOverlay').classList.add('hidden');
+      showToast('Kriovyn AI Workspace Initialized');
+    }
+
+    function showOnboarding() {
+      document.getElementById('moduleDrawer').classList.add('hidden');
+      document.getElementById('onboardingOverlay').classList.remove('hidden');
+    }
+
+    // ==================== NAVIGATION ====================
+    const screenTitles = {
+      home: 'Home', chat: 'AI Chat', workspace: 'Agent Workspace',
+      tasks: 'Tasks', notes: 'Notes', memory: 'Memory',
+      approvals: 'Approvals', voice: 'Voice', docs: 'Documents',
+      status: 'Connection', settings: 'Settings'
+    };
+
+    function navigate(screenId) {
+      state.currentScreen = screenId;
+      saveState();
+
+      document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById(`screen-${screenId}`);
+      if (target) target.classList.remove('hidden');
+
+      document.getElementById('headerScreenBadge').textContent = screenTitles[screenId] || screenId;
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.dataset.nav === screenId) {
+          btn.classList.remove('text-secText');
+          btn.classList.add('text-electric');
+        } else {
+          btn.classList.remove('text-electric');
+          btn.classList.add('text-secText');
+        }
+      });
+
+      renderAll();
+    }
+
+    function toggleModuleDrawer() {
+      document.getElementById('moduleDrawer').classList.toggle('hidden');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3200);
+    }
+
+    function hideToast() {
+      document.getElementById('toast').classList.add('hidden');
+    }
+
+    function updateBadges() {
+      const pendingApprovals = state.approvals.filter(a => a.status === 'PENDING').length;
+      const badge = document.getElementById('approvalBadge');
+      const banner = document.getElementById('homeApprovalBanner');
+      if (pendingApprovals > 0) {
+        badge.textContent = pendingApprovals;
+        badge.classList.remove('hidden');
+        banner.classList.remove('hidden');
+        document.getElementById('homeApprovalCountText').textContent = `${pendingApprovals} external action(s) awaiting user permission`;
+      } else {
+        badge.classList.add('hidden');
+        banner.classList.add('hidden');
+      }
+    }
+
+    // ==================== CORE AI AGENT ENGINE ====================
+    function handleQuickHomePrompt(e) {
+      e.preventDefault();
+      const input = document.getElementById('homeQuickInput');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      navigate('chat');
+      processUserMessage(text);
+    }
+
+    function sendSuggestedPrompt(text) {
+      processUserMessage(text);
+    }
+
+    function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      processUserMessage(text);
+    }
+
+    function processUserMessage(text) {
+      const session = getCurrentSession();
+      session.messages.push({
+        id: 'msg_' + Date.now(),
+        role: 'user',
+        text,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+      saveState();
+      renderChat();
+
+      // Show Agent Thinking Bar
+      const thinkingBar = document.getElementById('chatThinkingBar');
+      const thinkingText = document.getElementById('chatThinkingText');
+      thinkingBar.classList.remove('hidden');
+      thinkingText.textContent = 'AgentPlanner analyzing intent & memories...';
+
+      generationTimer = setTimeout(() => {
+        thinkingText.textContent = 'ToolValidator checking allowlist & policy...';
+        generationTimer = setTimeout(() => {
+          const agentOutcome = runKriovynAgentEngine(text);
+          session.messages.push({
+            id: 'msg_' + (Date.now() + 1),
+            role: 'ai',
+            text: agentOutcome.reply,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            toolUsed: agentOutcome.toolUsed
+          });
+          thinkingBar.classList.add('hidden');
+          saveState();
+          renderAll();
+        }, 650);
+      }, 650);
+    }
+
+    function stopGeneration() {
+      if (generationTimer) clearTimeout(generationTimer);
+      document.getElementById('chatThinkingBar').classList.add('hidden');
+      showToast('Generation cancelled by user');
+    }
+
+    function runKriovynAgentEngine(prompt) {
+      const lower = prompt.toLowerCase();
+
+      // 1. TASK CREATION (Group A - Local Execution)
+      if (lower.includes('task') || lower.includes('remind me to') || lower.includes('todo')) {
+        const cleanTitle = prompt
+          .replace(/create a (high priority |medium priority |low priority )?task to/i, '')
+          .replace(/add task/i, '')
+          .replace(/remind me to/i, '')
+          .trim() || 'Follow up on Kriovyn action';
+        const priority = lower.includes('high') ? 'HIGH' : lower.includes('low') ? 'LOW' : 'MEDIUM';
+
+        state.tasks.unshift({
+          id: 't_' + Date.now(),
+          title: cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1),
+          priority,
+          dueDate: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+          completed: false
+        });
+
+        state.lastExecution = {
+          request: prompt,
+          intent: 'CREATE_LOCAL_TASK',
+          reasoningSummary: 'Detected actionable task intent. Classified as Group A (Local Action) which executes immediately without external data exposure.',
+          steps: [
+            { step: 'Extract task title & priority level', status: 'COMPLETED' },
+            { step: 'Validate CreateTaskTool arguments', status: 'COMPLETED' },
+            { step: 'Insert entity into Room Tasks table', status: 'COMPLETED' }
+          ],
+          selectedTool: 'CreateTaskTool (Group A)',
+          result: `Created ${priority} priority task: "${cleanTitle}"`
+        };
+
+        return {
+          reply: `I have created a **${priority}** priority task in your local Task Manager:\n• "${cleanTitle}"\n\nYou can view or edit its due date anytime in the Tasks tab.`,
+          toolUsed: 'CreateTaskTool • Executed'
+        };
+      }
+
+      // 2. NOTE CREATION (Group A - Local Execution)
+      if (lower.includes('note') || lower.includes('write down')) {
+        const content = prompt.replace(/save note:?/i, '').replace(/take a note:?/i, '').trim() || prompt;
+        state.notes.unshift({
+          id: 'n_' + Date.now(),
+          title: 'AI Captured Note',
+          category: 'AI Research',
+          content,
+          updatedAt: 'Just now'
+        });
+
+        state.lastExecution = {
+          request: prompt,
+          intent: 'SAVE_LOCAL_NOTE',
+          reasoningSummary: 'Detected note capture request. Classified as Group A local database write.',
+          steps: [
+            { step: 'Sanitize note text payload', status: 'COMPLETED' },
+            { step: 'Execute SaveNoteTool into Room database', status: 'COMPLETED' }
+          ],
+          selectedTool: 'SaveNoteTool (Group A)',
+          result: 'Saved note to Notes Manager.'
+        };
+
+        return {
+          reply: `Saved to your **Notes Manager**:\n"${content}"`,
+          toolUsed: 'SaveNoteTool • Executed'
+        };
+      }
+
+      // 3. PERSONAL MEMORY (User-Approved Context)
+      if (lower.includes('remember')) {
+        const memText = prompt.replace(/remember( that)?/i, '').trim();
+        state.memories.unshift({
+          id: 'mem_' + Date.now(),
+          category: 'Preferences',
+          content: memText,
+          approved: true
+        });
+
+        state.lastExecution = {
+          request: prompt,
+          intent: 'STORE_APPROVED_MEMORY',
+          reasoningSummary: 'User explicitly instructed Kriovyn to remember personal preference. Stored in Personal Memory Engine.',
+          steps: [
+            { step: 'Verify explicit user memory directive', status: 'COMPLETED' },
+            { step: 'Store memory under Preferences category', status: 'COMPLETED' }
+          ],
+          selectedTool: 'SaveApprovedMemoryTool',
+          result: `Stored memory: "${memText}"`
+        };
+
+        return {
+          reply: `Stored in your **Personal Memory Engine** (User-Approved):\n• "${memText}"\n\nI will use this context to personalize future plans.`,
+          toolUsed: 'SaveApprovedMemoryTool • Stored'
+        };
+      }
+
+      // 4. EXTERNAL COMMUNICATION (Group B - Requires Approval!)
+      if (lower.includes('email') || lower.includes('sms') || lower.includes('message') || lower.includes('call') || lower.includes('calendar')) {
+        const isEmail = lower.includes('email');
+        const isSms = lower.includes('sms') || lower.includes('message');
+        const toolId = isEmail ? 'PrepareEmailTool' : isSms ? 'PrepareSmsTool' : 'CreateCalendarEventTool';
+        const actionName = isEmail ? 'Prepare External Email' : isSms ? 'Prepare SMS Compose Intent' : 'Create Calendar Event';
+
+        const approvalItem = {
+          id: 'app_' + Date.now(),
+          toolId,
+          actionName,
+          reason: `Triggered by user prompt: "${prompt}"`,
+          dataInvolved: prompt,
+          permission: isEmail ? 'Intent.ACTION_SENDTO (mailto:)' : isSms ? 'Intent.ACTION_SENDTO (smsto:)' : 'CalendarContract.Events',
+          status: 'PENDING'
+        };
+        state.approvals.unshift(approvalItem);
+
+        state.lastExecution = {
+          request: prompt,
+          intent: 'EXTERNAL_COMMUNICATION_ACTION',
+          reasoningSummary: 'Action involves external application handoff (Group B). Execution paused by ToolPolicyEngine pending explicit user authorization.',
+          steps: [
+            { step: `Select ${toolId} from allowlist`, status: 'COMPLETED' },
+            { step: 'Validate payload & target URI', status: 'COMPLETED' },
+            { step: 'Request user consent in Tool Approval Center', status: 'AWAITING_APPROVAL' }
+          ],
+          selectedTool: `${toolId} (Group B)`,
+          result: 'Paused — Awaiting user approval in Approval Center.'
+        };
+
+        return {
+          reply: `🛡️ **Authorization Required (Group B Security Policy)**\n\nI have prepared **${actionName}**, but Kriovyn never executes external communication intents silently.\n\nPlease open the **Tool Approval Center** (shield icon at top right) to review and approve or reject this action.`,
+          toolUsed: `${toolId} • Pending Approval`
+        };
+      }
+
+      // 5. GENERAL REASONING RESPONSE (Incorporating Approved Memory)
+      const memContext = state.memories.length > 0 ? state.memories[0].content : 'No custom memory set';
+      state.lastExecution = {
+        request: prompt,
+        intent: 'CONVERSATIONAL_REASONING',
+        reasoningSummary: 'Analyzed query using DemoAiProvider and active user-approved memory context. No external tools required.',
+        steps: [
+          { step: 'Retrieve approved personal memories', status: 'COMPLETED' },
+          { step: 'Check if external tools are needed (None)', status: 'COMPLETED' },
+          { step: 'Generate structured offline response', status: 'COMPLETED' }
+        ],
+        selectedTool: 'None (Direct Reasoning)',
+        result: 'Delivered response.'
+      };
+
+      return {
+        reply: `**Kriovyn Reasoning (Offline Demo Mode):**\nI analyzed your request: *"${prompt}"*.\n\n• **Active Memory Context:** ${memContext}\n• **Status:** Ready to assist with local Tasks, Notes, Document Summarization, or approved Android Intents.\n\n*(Tip: Connect a FastAPI Gemini backend in Settings for live cloud LLM generation.)*`,
+        toolUsed: null
+      };
+    }
+
+    // ==================== CHAT SESSION MANAGEMENT ====================
+    function getCurrentSession() {
+      let s = state.sessions.find(x => x.id === state.currentSessionId);
+      if (!s) {
+        s = state.sessions[0];
+        state.currentSessionId = s.id;
+      }
+      return s;
+    }
+
+    function createNewSession() {
+      const id = 'sess_' + Date.now();
+      state.sessions.unshift({
+        id,
+        title: `Session #${state.sessions.length + 1}`,
+        messages: [
+          {
+            id: 'm_' + Date.now(),
+            role: 'ai',
+            text: 'New conversation started. How can I help you plan or execute today?',
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          }
+        ]
+      });
+      state.currentSessionId = id;
+      saveState();
+      renderChat();
+      showToast('Created new conversation');
+    }
+
+    function switchSession(id) {
+      state.currentSessionId = id;
+      saveState();
+      renderChat();
+    }
+
+    function renameCurrentSession() {
+      const s = getCurrentSession();
+      const newName = prompt('Enter conversation title:', s.title);
+      if (newName && newName.trim()) {
+        s.title = newName.trim();
+        saveState();
+        renderChat();
+      }
+    }
+
+    function deleteCurrentSession() {
+      if (state.sessions.length <= 1) {
+        showToast('Cannot delete the only active session');
+        return;
+      }
+      state.sessions = state.sessions.filter(s => s.id !== state.currentSessionId);
+      state.currentSessionId = state.sessions[0].id;
+      saveState();
+      renderChat();
+      showToast('Conversation deleted');
+    }
+
+    function copyMessageText(text) {
+      const el = document.createElement('textarea');
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      showToast('Response copied to clipboard');
+    }
+
+    function saveMessageToNote(text) {
+      state.notes.unshift({
+        id: 'n_' + Date.now(),
+        title: 'Saved AI Response',
+        category: 'AI Research',
+        content: text,
+        updatedAt: 'Just now'
+      });
+      saveState();
+      showToast('Saved response to Notes Manager');
+    }
+
+    // ==================== APPROVAL CENTER ACTIONS ====================
+    function handleApprovalDecision(id, decision) {
+      const item = state.approvals.find(a => a.id === id);
+      if (!item) return;
+      item.status = decision;
+
+      const session = getCurrentSession();
+      if (decision === 'APPROVED') {
+        session.messages.push({
+          id: 'msg_' + Date.now(),
+          role: 'ai',
+          text: `✅ **Action Approved & Dispatched:**\nExecuted **${item.actionName}** via Android Intent (${item.permission}). Please complete any final confirmation inside the receiving Android app.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          toolUsed: `${item.toolId} • Approved`
+        });
+        showToast(`Approved: ${item.actionName}`);
+      } else {
+        session.messages.push({
+          id: 'msg_' + Date.now(),
+          role: 'ai',
+          text: `⛔ **Action Rejected:**\nYou denied permission for **${item.actionName}**. No external intent was launched.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          toolUsed: `${item.toolId} • Rejected`
+        });
+        showToast(`Rejected: ${item.actionName}`);
+      }
+
+      saveState();
+      renderAll();
+    }
+
+    // ==================== TASKS CRUD ====================
+    function toggleTaskForm() {
+      document.getElementById('taskForm').classList.toggle('hidden');
+    }
+
+    function addTaskFromForm(e) {
+      e.preventDefault();
+      const title = document.getElementById('taskTitleInput').value.trim();
+      const priority = document.getElementById('taskPriorityInput').value;
+      const dueDate = document.getElementById('taskDateInput').value || 'No due date';
+      if (!title) return;
+
+      state.tasks.unshift({
+        id: 't_' + Date.now(),
+        title,
+        priority,
+        dueDate,
+        completed: false
+      });
+      document.getElementById('taskTitleInput').value = '';
+      toggleTaskForm();
+      saveState();
+      renderAll();
+      showToast('Task added');
+    }
+
+    function toggleTaskComplete(id) {
+      const t = state.tasks.find(x => x.id === id);
+      if (t) {
+        t.completed = !t.completed;
+        saveState();
+        renderAll();
+      }
+    }
+
+    function deleteTask(id) {
+      state.tasks = state.tasks.filter(x => x.id !== id);
+      saveState();
+      renderAll();
+      showToast('Task deleted');
+    }
+
+    // ==================== NOTES CRUD ====================
+    function toggleNoteForm() {
+      document.getElementById('noteForm').classList.toggle('hidden');
+      document.getElementById('editNoteId').value = '';
+      document.getElementById('noteTitleInput').value = '';
+      document.getElementById('noteContentInput').value = '';
+    }
+
+    function saveNoteFromForm(e) {
+      e.preventDefault();
+      const id = document.getElementById('editNoteId').value;
+      const title = document.getElementById('noteTitleInput').value.trim();
+      const category = document.getElementById('noteCategoryInput').value;
+      const content = document.getElementById('noteContentInput').value.trim();
+
+      if (id) {
+        const existing = state.notes.find(n => n.id === id);
+        if (existing) {
+          existing.title = title;
+          existing.category = category;
+          existing.content = content;
+          existing.updatedAt = 'Edited just now';
+        }
+      } else {
+        state.notes.unshift({
+          id: 'n_' + Date.now(),
+          title,
+          category,
+          content,
+          updatedAt: 'Just now'
+        });
+      }
+      toggleNoteForm();
+      saveState();
+      renderAll();
+      showToast('Note saved');
+    }
+
+    function editNote(id) {
+      const n = state.notes.find(x => x.id === id);
+      if (!n) return;
+      document.getElementById('noteForm').classList.remove('hidden');
+      document.getElementById('editNoteId').value = n.id;
+      document.getElementById('noteTitleInput').value = n.title;
+      document.getElementById('noteCategoryInput').value = n.category;
+      document.getElementById('noteContentInput').value = n.content;
+    }
+
+    function deleteNote(id) {
+      state.notes = state.notes.filter(x => x.id !== id);
+      saveState();
+      renderAll();
+      showToast('Note deleted');
+    }
+
+    // ==================== MEMORY CRUD ====================
+    function addMemoryFromForm(e) {
+      e.preventDefault();
+      const category = document.getElementById('memoryCategoryInput').value;
+      const content = document.getElementById('memoryContentInput').value.trim();
+      if (!content) return;
+
+      state.memories.unshift({
+        id: 'mem_' + Date.now(),
+        category,
+        content,
+        approved: true
+      });
+      document.getElementById('memoryContentInput').value = '';
+      saveState();
+      renderAll();
+      showToast('Memory approved & saved');
+    }
+
+    function deleteMemory(id) {
+      state.memories = state.memories.filter(m => m.id !== id);
+      saveState();
+      renderAll();
+      showToast('Memory entry deleted');
+    }
+
+    function clearAllMemories() {
+      state.memories = [];
+      saveState();
+      renderAll();
+      showToast('All personal memories cleared');
+    }
+
+    // ==================== VOICE ASSISTANT ====================
+    let isRecording = false;
+    function toggleVoiceRecording() {
+      isRecording = !isRecording;
+      const ring = document.getElementById('voicePulseRing');
+      const label = document.getElementById('voiceBtnLabel');
+      const transcript = document.getElementById('voiceTranscriptText');
+
+      if (isRecording) {
+        ring.classList.remove('hidden');
+        label.textContent = 'LISTENING...';
+        transcript.textContent = 'Listening for foreground speech input... (Tap sample phrase below or tap mic to stop)';
+      } else {
+        ring.classList.add('hidden');
+        label.textContent = 'TAP TO SPEAK';
+        transcript.textContent = 'Microphone stopped.';
+      }
+    }
+
+    function simulateVoicePhrase(phrase) {
+      isRecording = false;
+      document.getElementById('voicePulseRing').classList.add('hidden');
+      document.getElementById('voiceBtnLabel').textContent = 'TAP TO SPEAK';
+      document.getElementById('voiceTranscriptText').textContent = `"${phrase}"`;
+      showToast('Voice command captured — routing to Agent');
+      setTimeout(() => {
+        navigate('chat');
+        processUserMessage(phrase);
+      }, 700);
+    }
+
+    // ==================== DOCUMENT ASSISTANT ====================
+    let lastDocAnalysis = '';
+
+    function handleDocFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('docContentArea').value = e.target.result;
+        showToast(`Loaded "${file.name}"`);
+      };
+      reader.readAsText(file);
+    }
+
+    function loadSampleDocument() {
+      document.getElementById('docContentArea').value =
+        "KRIOVYN AI TECHNICAL SPECIFICATION v1.0\n" +
+        "1. Architecture: Built on Kotlin, Jetpack Compose, Material 3, MVVM, and Room Database.\n" +
+        "2. Security Model: Zero API keys embedded in APK. Group A actions run locally; Group B external intents require user approval via ToolApprovalCenter.\n" +
+        "3. Offline Resilience: Automatically falls back to DemoAiProvider when FastAPI backend is unreachable, preserving full local task and note workflows.";
+      showToast('Sample specification loaded');
+    }
+
+    function clearDocument() {
+      document.getElementById('docContentArea').value = '';
+      document.getElementById('docOutputCard').classList.add('hidden');
+    }
+
+    function analyzeDocument(mode) {
+      const text = document.getElementById('docContentArea').value.trim();
+      if (!text) {
+        showToast('Please upload or paste document text first');
+        return;
+      }
+      const sentences = text.split(/[.!\n]+/).map(s => s.trim()).filter(Boolean);
+      const outputCard = document.getElementById('docOutputCard');
+      const titleEl = document.getElementById('docOutputTitle');
+      const textEl = document.getElementById('docOutputText');
+
+      if (mode === 'summary') {
+        titleEl.textContent = 'Document Executive Summary';
+        lastDocAnalysis = `Summary (${sentences.length} segments analyzed):\n` + sentences.slice(0, 3).join('. ') + '.';
+      } else {
+        titleEl.textContent = 'Extracted Key Points';
+        lastDocAnalysis = sentences.slice(0, 4).map(s => `• ${s}`).join('\n');
+      }
+
+      textEl.textContent = lastDocAnalysis;
+      outputCard.classList.remove('hidden');
+    }
+
+    function saveDocAnalysisToNotes() {
+      if (!lastDocAnalysis) return;
+      state.notes.unshift({
+        id: 'n_' + Date.now(),
+        title: 'Document Assistant Summary',
+        category: 'AI Research',
+        content: lastDocAnalysis,
+        updatedAt: 'Just now'
+      });
+      saveState();
+      showToast('Saved analysis to Notes Manager');
+    }
+
+    // ==================== SETTINGS & CONNECTION STATUS ====================
+    function applyTheme(theme) {
+      const html = document.documentElement;
+      const btn = document.getElementById('themeToggleBtn');
+      if (theme === 'dark') {
+        html.classList.add('dark');
+        if (btn) btn.textContent = 'Dark Active';
+      } else {
+        html.classList.remove('dark');
+        if (btn) btn.textContent = 'Light Active';
+      }
+    }
+
+    function toggleTheme() {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(state.theme);
+      saveState();
+    }
+
+    function saveBackendUrl() {
+      const url = document.getElementById('backendUrlInput').value.trim();
+      state.backendUrl = url;
+      saveState();
+      renderStatus();
+      showToast(url ? 'Backend endpoint saved' : 'Switched to Offline Demo Mode');
+    }
+
+    function testBackendConnection() {
+      const url = state.backendUrl;
+      const diagResult = document.getElementById('diagLastResult');
+      if (!url) {
+        diagResult.textContent = 'No backend URL configured — Offline Demo Mode verified.';
+        showToast('Running cleanly in Offline Demo Mode');
+      } else {
+        diagResult.textContent = `Probe to ${url} timed out (Simulated sandbox) — Fallback to Demo Mode active.`;
+        showToast('Backend unreachable — safely using Demo Mode');
+      }
+    }
+
+    function exportAllData() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'kriovyn-ai-backup.json';
+      a.click();
+      showToast('Exported Kriovyn JSON backup');
+    }
+
+    function resetAllLocalData() {
+      localStorage.removeItem(STORAGE_KEY);
+      state = structuredClone(defaultState);
+      state.onboarded = true;
+      saveState();
+      renderAll();
+      showToast('All local data reset to defaults');
+    }
+
+    // ==================== RENDER FUNCTIONS ====================
+    function renderAll() {
+      updateBadges();
+      renderHome();
+      renderChat();
+      renderWorkspace();
+      renderTasks();
+      renderNotes();
+      renderMemories();
+      renderApprovals();
+      renderStatus();
+    }
+
+    function renderHome() {
+      const tasksEl = document.getElementById('homeTasksList');
+      const pending = state.tasks.filter(t => !t.completed).slice(0, 3);
+      tasksEl.innerHTML = pending.length ? pending.map(t => `
+        <div class="flex items-center justify-between p-2.5 rounded-2xl bg-navy/80 border border-slate-800/80">
+          <div class="flex items-center gap-2.5">
+            <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTaskComplete('${t.id}')" class="accent-electric rounded" />
+            <span class="text-xs font-medium">${escapeHtml(t.title)}</span>
+          </div>
+          <span class="text-[9px] px-2 py-0.5 rounded-full font-bold ${priorityBadgeClass(t.priority)}">${t.priority}</span>
+        </div>
+      `).join('') : '<p class="text-xs text-secText">All tasks completed!</p>';
+
+      const sessionsEl = document.getElementById('homeSessionsList');
+      sessionsEl.innerHTML = state.sessions.slice(0, 2).map(s => `
+        <div onclick="switchSession('${s.id}'); navigate('chat')" class="p-2.5 rounded-2xl bg-navy/80 border border-slate-800/80 flex items-center justify-between cursor-pointer hover:border-electric/40">
+          <div>
+            <div class="text-xs font-semibold">${escapeHtml(s.title)}</div>
+            <div class="text-[11px] text-secText truncate max-w-[240px]">${escapeHtml(s.messages[s.messages.length - 1]?.text || '')}</div>
+          </div>
+          <span class="text-electric text-xs">→</span>
+        </div>
+      `).join('');
+    }
+
+    function renderChat() {
+      const selector = document.getElementById('sessionSelector');
+      selector.innerHTML = state.sessions.map(s =>
+        `<option value="${s.id}" ${s.id === state.currentSessionId ? 'selected' : ''}>${escapeHtml(s.title)}</option>`
+      ).join('');
+
+      const session = getCurrentSession();
+      const container = document.getElementById('chatMessages');
+      container.innerHTML = session.messages.map(m => {
+        const isUser = m.role === 'user';
+        return `
+          <div class="flex flex-col ${isUser ? 'items-end' : 'items-start'}">
+            <div class="max-w-[85%] p-3.5 rounded-2xl text-xs leading-relaxed ${
+              isUser
+                ? 'bg-gradient-to-r from-electric to-violet text-navy font-medium rounded-br-sm'
+                : 'bg-surface border border-slate-800 text-mainText rounded-bl-sm'
+            }">
+              ${m.toolUsed ? `<div class="mb-1.5 inline-block px-2 py-0.5 rounded-md bg-electric/15 border border-electric/30 text-electric text-[10px] font-semibold">⚡ ${escapeHtml(m.toolUsed)}</div>` : ''}
+              <div class="whitespace-pre-line">${formatMarkdownBold(escapeHtml(m.text))}</div>
+            </div>
+            <div class="flex items-center gap-2 mt-1 px-1 text-[10px] text-secText">
+              <span>${m.timestamp}</span>
+              ${!isUser ? `
+                <button onclick="copyMessageText(\`${m.text.replace(/`/g, '\\`')}\`)" class="hover:text-electric">Copy</button>
+                <button onclick="saveMessageToNote(\`${m.text.replace(/`/g, '\\`')}\`)" class="hover:text-violet">Save Note</button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function renderWorkspace() {
+      const exec = state.lastExecution;
+      document.getElementById('workspaceExecutionCard').innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-semibold text-electric">Intent: ${escapeHtml(exec.intent)}</span>
+          <span class="text-[10px] px-2 py-0.5 rounded bg-surfaceLight text-mainText">${escapeHtml(exec.selectedTool)}</span>
+        </div>
+        <div class="text-xs font-semibold text-mainText">Request: "${escapeHtml(exec.request)}"</div>
+        <p class="text-xs text-secText bg-navy p-3 rounded-2xl border border-slate-800">${escapeHtml(exec.reasoningSummary)}</p>
+        <div class="space-y-1.5">
+          <div class="text-[10px] uppercase tracking-wider text-secText font-bold">Execution Steps</div>
+          ${exec.steps.map(st => `
+            <div class="flex items-center justify-between text-xs p-2 rounded-xl bg-navy/70">
+              <span>${escapeHtml(st.step)}</span>
+              <span class="text-[10px] font-bold ${st.status === 'COMPLETED' ? 'text-emerald-400' : 'text-amber-300'}">${st.status}</span>
+            </div>
+          `).join('')}
+        </div>
+        <div class="text-xs text-emerald-300 font-medium pt-1">Outcome: ${escapeHtml(exec.result)}</div>
+      `;
+
+      document.getElementById('toolRegistryList').innerHTML = TOOL_REGISTRY.map(t => `
+        <div class="p-2.5 rounded-2xl bg-navy border border-slate-800/80 flex items-center justify-between">
+          <div>
+            <div class="text-xs font-bold text-electric">${t.id}</div>
+            <div class="text-[11px] text-secText">${t.desc}</div>
+          </div>
+          <span class="text-[9px] px-2 py-0.5 rounded-full bg-surfaceLight text-secText shrink-0 ml-2">${t.group}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderTasks() {
+      const query = (document.getElementById('taskSearchInput')?.value || '').toLowerCase();
+      const filter = document.getElementById('taskFilterSelect')?.value || 'ALL';
+
+      const filtered = state.tasks.filter(t => {
+        const matchesQuery = t.title.toLowerCase().includes(query);
+        const matchesFilter = filter === 'ALL' || (filter === 'PENDING' && !t.completed) || (filter === 'COMPLETED' && t.completed);
+        return matchesQuery && matchesFilter;
+      });
+
+      document.getElementById('tasksContainer').innerHTML = filtered.length ? filtered.map(t => `
+        <div class="p-3.5 rounded-2xl bg-surface border border-slate-800 flex items-center justify-between">
+          <div class="flex items-start gap-3">
+            <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTaskComplete('${t.id}')" class="mt-1 accent-electric" />
+            <div>
+              <div class="text-xs font-semibold ${t.completed ? 'line-through text-secText' : 'text-mainText'}">${escapeHtml(t.title)}</div>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="text-[9px] px-2 py-0.5 rounded-full font-bold ${priorityBadgeClass(t.priority)}">${t.priority}</span>
+                <span class="text-[10px] text-secText">Due: ${escapeHtml(t.dueDate)}</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="deleteTask('${t.id}')" class="text-xs text-secText hover:text-rose-400 p-1">🗑️</button>
+        </div>
+      `).join('') : '<p class="text-xs text-secText text-center py-6">No matching tasks found.</p>';
+    }
+
+    function renderNotes() {
+      const query = (document.getElementById('noteSearchInput')?.value || '').toLowerCase();
+      const filtered = state.notes.filter(n =>
+        n.title.toLowerCase().includes(query) ||
+        n.content.toLowerCase().includes(query) ||
+        n.category.toLowerCase().includes(query)
+      );
+
+      document.getElementById('notesContainer').innerHTML = filtered.length ? filtered.map(n => `
+        <div class="p-3.5 rounded-2xl bg-surface border border-slate-800 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-violet/20 text-violet font-semibold">${escapeHtml(n.category)}</span>
+            <div class="flex items-center gap-2 text-xs">
+              <button onclick="editNote('${n.id}')" class="text-secText hover:text-electric">✏️</button>
+              <button onclick="deleteNote('${n.id}')" class="text-secText hover:text-rose-400">🗑️</button>
+            </div>
+          </div>
+          <div class="text-xs font-bold text-mainText">${escapeHtml(n.title)}</div>
+          <p class="text-xs text-secText leading-relaxed">${escapeHtml(n.content)}</p>
+          <div class="text-[10px] text-secText/70">Updated: ${escapeHtml(n.updatedAt)}</div>
+        </div>
+      `).join('') : '<p class="text-xs text-secText text-center py-6">No notes found.</p>';
+    }
+
+    function renderMemories() {
+      const query = (document.getElementById('memorySearchInput')?.value || '').toLowerCase();
+      const filtered = state.memories.filter(m =>
+        m.content.toLowerCase().includes(query) || m.category.toLowerCase().includes(query)
+      );
+
+      document.getElementById('memoryContainer').innerHTML = filtered.length ? filtered.map(m => `
+        <div class="p-3.5 rounded-2xl bg-surface border border-slate-800 flex items-start justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-electric/15 text-electric font-semibold">${escapeHtml(m.category)}</span>
+              <span class="text-[10px] text-emerald-400 font-medium">✓ User Approved</span>
+            </div>
+            <p class="text-xs text-mainText">${escapeHtml(m.content)}</p>
+          </div>
+          <button onclick="deleteMemory('${m.id}')" class="text-xs text-secText hover:text-rose-400">🗑️</button>
+        </div>
+      `).join('') : '<p class="text-xs text-secText text-center py-6">No approved memories stored.</p>';
+    }
+
+    function renderApprovals() {
+      const container = document.getElementById('approvalsContainer');
+      container.innerHTML = state.approvals.length ? state.approvals.map(a => `
+        <div class="p-4 rounded-3xl bg-surface border ${a.status === 'PENDING' ? 'border-amber-400/50' : 'border-slate-800'} space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-electric">${escapeHtml(a.toolId)}</span>
+            <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold ${
+              a.status === 'PENDING' ? 'bg-amber-500/20 text-amber-300' :
+              a.status === 'APPROVED' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'
+            }">${a.status}</span>
+          </div>
+          <div class="text-sm font-bold text-mainText">${escapeHtml(a.actionName)}</div>
+          <div class="text-xs text-secText space-y-1 bg-navy p-3 rounded-2xl">
+            <div><strong class="text-mainText">Reason:</strong> ${escapeHtml(a.reason)}</div>
+            <div><strong class="text-mainText">Payload:</strong> ${escapeHtml(a.dataInvolved)}</div>
+            <div><strong class="text-mainText">Android Intent:</strong> <code class="text-violet">${escapeHtml(a.permission)}</code></div>
+          </div>
+          ${a.status === 'PENDING' ? `
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <button onclick="handleApprovalDecision('${a.id}', 'REJECTED')" class="py-2 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 font-bold text-xs">
+                Reject Action
+              </button>
+              <button onclick="handleApprovalDecision('${a.id}', 'APPROVED')" class="py-2 rounded-xl bg-emerald-500 text-navy font-bold text-xs">
+                Approve & Dispatch
+              </button>
+            </div>
+          ` : ''}
+        </div>
+      `).join('') : '<p class="text-xs text-secText text-center py-6">No tool approval requests recorded.</p>';
+    }
+
+    function renderStatus() {
+      const hasUrl = Boolean(state.backendUrl);
+      document.getElementById('diagEndpoint').textContent = hasUrl ? state.backendUrl : 'Not Configured';
+      document.getElementById('diagProvider').textContent = hasUrl ? 'FastApiGeminiAdapter (Configured)' : 'DemoAiProvider (Local)';
+      document.getElementById('aiStatusText').textContent = hasUrl ? 'Backend Set' : 'Demo Mode';
+    }
+
+    // ==================== HELPERS ====================
+    function priorityBadgeClass(p) {
+      if (p === 'HIGH') return 'bg-rose-500/20 text-rose-300';
+      if (p === 'MEDIUM') return 'bg-amber-500/20 text-amber-300';
+      return 'bg-emerald-500/20 text-emerald-300';
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function formatMarkdownBold(str) {
+      return str.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    }
+  </script>
+</body>
+</html>
